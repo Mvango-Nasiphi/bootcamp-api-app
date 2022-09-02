@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
+</head>
+
+<body>
+    <h1>My bootcamp API widgets</h1>
+    <div x-data="{
+        sentence: '',
+        longestWord: '',
+        shortestWord: '',
+        wordLengths: 0,
+        checkSentence() {
+
+            axios
+                .get(`/api/word_game?sentence=${this.sentence}`)
+                .then((result) => {
+
+                    this.longestWord = result.data.longestWord;
+                    this.shortestWord = result.data.shortestWord;
+                    this.wordLengths = result.data.sum;
+
+        });
+            
+        },
+        bills: '',
+        totalPhoneBill: 'R'+ 0,
+        calculateBill() { axios
+            .get(`/api/phonebill/total?bills=${this.bills}`)
+            .then((result) => {
+
+                this.totalPhoneBill = result.data.totalPhoneBill;
+
+        });
+    }
+    }">
+
+        <div class="Word_game">
+            <h2>Words Widget API</h2>
+            <div>
+                <textarea x-model="sentence" name="" id="" cols="30" rows="5"></textarea>
+                <div>
+                    <button x-on:click="checkSentence">Check</button>
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    Longest Word: <span x-text="longestWord"></span>
+                </div>
+
+                <div>
+                    Shortest Word: <span x-text="shortestWord"></span>
+                </div>
+
+                <div>
+                    Word Length: <span x-text="wordLengths"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="TotalPhoneBill">
+            <h2>Total Phone bill API</h2>
+            <div class="total">
+                <div>
+                    <textarea x-model="bills" name="" id="" cols="30" rows="5"></textarea>
+                    <div>
+                        <button x-on:click="calculateBill">Calculate</button>
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        Total Phone Bill: <span x-text="totalPhoneBill"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="prices">
+                <div>
+                    <textarea x-model="bills" name="" id="" cols="30" rows="5"></textarea>
+                    <div>
+                        <button x-on:click="calculateBill">Calculate</button>
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        call: <span x-text=""></span>
+                    </div>
+                    <div>
+                        sms: <span x-text=""></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="price">
+                <div>
+                    <textarea x-model="bills" name="" id="" cols="30" rows="5"></textarea>
+                    <div>
+                        <button x-on:click="calculateBill">Calculate</button>
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        Total Phone Bill: <span x-text="totalPhoneBill"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="EnoughAirtime">
+            <h2>Enough Airtime API</h2>
+
+        </div>
+    </div>
+
+</body>
+
+</html>
