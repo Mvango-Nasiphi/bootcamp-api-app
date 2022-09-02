@@ -78,7 +78,7 @@ app.post('api/enough', function(req, res){
 
 
 
-const PORT = 6007;
+const PORT = process.env.PORT || 6007;
 app.listen(PORT, function(){
     console.log('App starting on port', PORT);
   });
