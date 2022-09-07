@@ -10,6 +10,9 @@ import enoughAirtime from './bootcamp/enoughAirtime.js';
 
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 app.use(express.static('public'));
 
 app.get('/api/word_game', function(req, res){
@@ -46,6 +49,8 @@ app.get('/api/phonebill/total', function(req, res){
 app.get('/api/phonebill/prices', function(req, res){
 
     const bills = req.query.bills;
+    const calls = 2.75;
+    const sms = 0.65;
 
     if(!bills) {
         res.json({
@@ -53,28 +58,56 @@ app.get('/api/phonebill/prices', function(req, res){
         })
     }
     res.json({
-        "calls" : totalPhoneBill(bills),
-        "sms" : totalPhoneBill(bills),
+        "calls" : calls,
+        "sms" : sms,
 
     });
 });
 
 
+app.post('api/phonebill/price', async function(req, res){
 
-app.post('api/enough', function(req, res){
+    //const bills = req.body.bills;
+    const calls = 2.75;
+    const sms = 0.65;
 
-    const bills = req.body.bills;
-    
+    const type = req.body.type;
+    const price = req.body.price;
 
-    if(!bills) {
+    if(type === 'sms') {
+        sms = price
+    } 
+    else if(type === 'calls') {
+        calls = price
+    }
+
+    res.json({
+        "type": type,
+        "price": price
+    });
+});
+
+
+app.get('/api/enough', function(req, res){
+
+    const usage = req.query.usage;
+    const amount = req.query.amount;
+
+    if(!usage) {
         res.json({
-            error : 'Please enter the data to analyse'
+            error : 'Please enter data'
+        })
+    }
+    if(!amount) {
+        res.json({
+            error : 'Please enter available amount'
         })
     }
     res.json({
-        "enoughAirtime" : enoughAirtime(usage, amount),
+        "airtimeMessage" : enoughAirtime(usage, amount),
     });
 });
+
 
 
 

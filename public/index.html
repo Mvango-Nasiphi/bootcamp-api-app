@@ -27,102 +27,184 @@
                     this.longestWord = result.data.longestWord;
                     this.shortestWord = result.data.shortestWord;
                     this.wordLengths = result.data.sum;
-
         });
             
-        },
+    },
         bills: '',
         totalPhoneBill: 'R'+ 0,
-        calculateBill() { axios
-            .get(`/api/phonebill/total?bills=${this.bills}`)
-            .then((result) => {
-
-                this.totalPhoneBill = result.data.totalPhoneBill;
-
+        calculateBill() { 
+            axios
+                .get(`/api/phonebill/total?bills=${this.bills}`)
+                .then((result) => {
+                    this.totalPhoneBill = result.data.totalPhoneBill;
         });
-    }
+    },
+
+        bills: '',
+        calls: 'R'+ 0,
+        sms: 'R'+ 0,
+        calculatePrices() { 
+            axios
+                .get(`/api/phonebill/prices?bills=${this.bills}`)
+                .then((result) => {
+                    this.calls = result.data.calls;
+                    this.sms = result.data.sms;
+        });
+    },
+
+    bills: '',
+    type: '',
+    price: 'R'+ 0,
+    checkPrice() { 
+        axios
+            .post(`/api/phonebill/price`, {
+                type : 'sms',
+                price : 2.85
+              })
+            .then((result) => {
+                this.type = result.data.type;
+                this.price = result.data.price;
+    });
+},
+
+
+        usage: '',
+        amount: '0.00',
+        airtimeMessage: 'R'+ 0,       
+        calculate() { 
+            axios
+                .get(`api/enough?usage=${this.usage}&amount=${this.amount}`)
+                .then((result) => {
+                    this.airtimeMessage = result.data.airtimeMessage;
+        });
+    },
+    
+            
     }">
 
-        <div class="Word_game">
-            <h2>Words Widget API</h2>
+        <div class="widget">
+            <h2>Word Game widget</h2>
             <div>
-                <textarea x-model="sentence" name="" id="" cols="30" rows="5"></textarea>
+                <label for="sentence">Please enter the sentence:</label>
                 <div>
-                    <button x-on:click="checkSentence">Check</button>
+                    <textarea x-model="sentence" name="" id="" cols="30" rows="5"></textarea>
                 </div>
+            </div>
+            <div>
+                <button x-on:click="checkSentence">Check</button>
             </div>
 
             <div>
-                <div>
+                <div class="message">
                     Longest Word: <span x-text="longestWord"></span>
                 </div>
 
-                <div>
+                <div class="message">
                     Shortest Word: <span x-text="shortestWord"></span>
                 </div>
 
-                <div>
+                <div class="message">
                     Word Length: <span x-text="wordLengths"></span>
                 </div>
             </div>
         </div>
 
-        <div class="TotalPhoneBill">
-            <h2>Total Phone bill API</h2>
-            <div class="total">
-                <div>
-                    <textarea x-model="bills" name="" id="" cols="30" rows="5"></textarea>
+        <div class="widget">
+            <h2>Phone bill widget</h2>
+            <div class="bills">
+                <div class="phoneBill">
+                    <h3>Total Phone bill</h3>
+                    <p>This widget calculates the total bill for the data provided based on the projected usage.</p>
                     <div>
-                        <button x-on:click="calculateBill">Calculate</button>
+                        <div class="input">
+                            <label for="">Please enter your phone usage:</label>
+                            <input type="text" x-model="bills" id="">
+                        </div>
+                        <div>
+                            <button x-on:click="calculateBill">Calculate</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="message">
+                            Total Phone Bill: <span x-text="totalPhoneBill"></span>
+                        </div>
                     </div>
                 </div>
 
-                <div>
+                <div class="phoneBill">
+                    <h3>Total Prices</h3>
+                    <p>This widget calculates the prices for the data provided.</p>
                     <div>
-                        Total Phone Bill: <span x-text="totalPhoneBill"></span>
+                        <div class="input">
+                            <label for="">Please enter your phone usage:</label>
+                            <input type="text" x-model="bills" id="">
+                        </div>
+                        <div>
+                            <button x-on:click="calculatePrices">Calculate</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="message">
+                            Call: <span x-text="calls"></span>
+                        </div>
+                        <div class="message">
+                            Sms: <span x-text="sms"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phoneBill">
+                    <h3>Price widget</h3>
+                    <p>This widget set the price for the data provided.</p>
+                    <div>
+                        <div class="input">
+                            <label for="">Please enter your phone usage:</label>
+                            <input type="text" x-model="" id="">
+                        </div>
+                        <div>
+                            <button x-on:click="checkPrice">Check</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="message">
+                            Type: <span x-text="type"></span>
+
+                        </div>
+                        <div class="message">
+                            Price: <span x-text="price"></span>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="prices">
-                <div>
-                    <textarea x-model="bills" name="" id="" cols="30" rows="5"></textarea>
-                    <div>
-                        <button x-on:click="calculateBill">Calculate</button>
-                    </div>
-                </div>
-
-                <div>
-                    <div>
-                        call: <span x-text=""></span>
-                    </div>
-                    <div>
-                        sms: <span x-text=""></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="price">
-                <div>
-                    <textarea x-model="bills" name="" id="" cols="30" rows="5"></textarea>
-                    <div>
-                        <button x-on:click="calculateBill">Calculate</button>
-                    </div>
-                </div>
-
-                <div>
-                    <div>
-                        Total Phone Bill: <span x-text="totalPhoneBill"></span>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
-        <div class="EnoughAirtime">
-            <h2>Enough Airtime API</h2>
+        <div class="widget">
+            <h2>Enough Airtime Widget</h2>
+            <p>The widget calculates if you will have enough airtime based on their projected usage.</p>
+            <div class="input">
+                <label for="usage">Please enter your airtime usage:</label>
+                <input type="text" x-model="usage" id="usage">
+            </div>
 
+            <div class="input">
+                <label for="amount">Amount available:</label>
+                <input type="text" x-model="amount" id="amount">
+            </div>
+
+            <span>Results:</span>
+            <div class="message" x-text="airtimeMessage">
+
+            </div>
+
+            <div>
+                <button x-on:click="calculate">Calculate airtime usage</button>
+            </div>
         </div>
+
+
     </div>
 
 </body>
